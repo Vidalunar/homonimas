@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Homónimas · Elige la correcta</title>
 
+<!-- TailwindCSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand:wght@400&display=swap" rel="stylesheet" />
 <meta name="color-scheme" content="light dark" />
@@ -69,31 +70,6 @@
     border-color:#fecaca;
     box-shadow: inset 0 0 0 2px rgba(239,68,68,.35), 0 18px 30px rgba(8,21,41,.35);
   }
-
-  /* Toast */
-  .toast{ position:absolute; right:0; top:-36px; padding:.35rem .65rem; border-radius:12px; font-size:.9rem;
-    background:#0fb69e; color:#062a2a; border:1px solid #9ff3ea; opacity:0; transform:translateY(8px); transition: all .25s ease; }
-  .toast.show{ opacity:1; transform:translateY(0); }
-
-  /* Switch */
-  .switch{
-    position:relative; display:inline-flex; align-items:center;
-    height:40px; width:5rem; border-radius:9999px;
-    cursor:pointer; transition:.2s;
-    background:#27415f; border:1px solid #ffffff4a; box-shadow: inset 0 0 16px #0006;
-  }
-  .switch[data-on="true"]{ background:#18c9bf; box-shadow: inset 0 0 10px #ffffff80, 0 0 16px #21ffe6aa; }
-  .knob{
-    position:absolute; top:.125rem; left:.125rem;
-    height:36px; width:36px; border-radius:9999px;
-    background:#fff; box-shadow:0 6px 14px rgba(0,0,0,.25);
-    display:grid; place-items:center;
-    transition: transform .25s ease;
-    font-weight:900; font-size:22px; text-shadow:0 1px 0 #fff,0 0 6px #21ffe666;
-  }
-  .switch[data-on="true"] .knob{ transform: translateX(44px); }
-  .k-tick{ color:#063; filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px #c3fff6); }
-  .k-x{ color:#6b7280; }
 </style>
 </head>
 
@@ -107,7 +83,6 @@
     </div>
     <div class="flex-1">
       <h1 class="hero-title text-3xl sm:text-4xl md:text-5xl font-bold">Homónimas · Elige la correcta</h1>
-      <p class="text-base md:text-lg text-cyan-100/90 -mt-1">21 rondas · Pista y Reintento (+0,5) · Nota automática</p>
     </div>
     <button id="muteBtn" class="btn btn-ghost px-3 py-2" title="Silenciar/activar sonido">🔊</button>
   </div>
@@ -133,39 +108,33 @@
       </div>
       <p id="hudHint" class="opacity-90 text-sm">
         Pulsa <b>Comenzar</b> y elige la palabra correcta para completar la oración.
-        <b>Pista</b> / <b>Reintentar</b> valen +0,5. <b>Siguiente</b> salta; <b>Ver respuesta</b> no puntúa.
-        <b>Ignorar tildes</b> permite comparar “se cayó” = “se cayo”.
+        <b>Ver respuesta</b> muestra la solución (no puntúa). <b>Siguiente</b> salta la ronda (no puntúa).
       </p>
     </div>
 
     <div class="grid md:grid-cols-2 gap-6 mb-6">
-      <div class="card rounded-2xl p-5 relative">
-        <div class="flex items-center justify-between">
-          <div class="relative">
-            <span class="mr-3">Ignorar tildes</span>
-            <button id="accentSwitch" class="switch" data-on="true" aria-label="Ignorar tildes">
-              <span class="knob"><span class="k-tick">✓</span><span class="k-x">×</span></span>
-            </button>
-            <span id="tildeToast" class="toast">✓ Tildes ignoradas</span>
-          </div>
+      <div class="card rounded-2xl p-5">
+        <div class="flex items-center justify-between gap-3">
           <div class="flex gap-3">
             <button id="startBtn" class="btn text-lg">Comenzar</button>
             <button id="restartBtn" class="btn btn-amber hidden">Reiniciar</button>
           </div>
         </div>
+
         <details class="mt-4">
           <summary class="cursor-pointer">Ver instrucciones</summary>
           <ul class="list-disc pl-6 space-y-1 mt-2">
-            <li>21 rondas: en cada una hay una oración con hueco y 2 opciones.</li>
-            <li><b>Pista</b> y <b>Reintentar</b>: si aciertas después, sumas <b>+0,5</b>.</li>
-            <li><b>Siguiente</b> pasa; <b>Ver respuesta</b> muestra la solución (no puntúa).</li>
+            <li>21 rondas: una oración con hueco y 2 opciones.</li>
+            <li>Acierto: <b>+1 punto</b>.</li>
+            <li><b>Ver respuesta</b> y <b>Siguiente</b> no puntúan.</li>
             <li>Al final verás tu nota según el baremo.</li>
           </ul>
         </details>
       </div>
+
       <div class="card rounded-2xl p-5">
-        <h2 class="text-xl font-bold mb-2">Objetivo</h2>
-        <p>Practicar <b>palabras homónimas</b> con corrección automática, sonidos y confeti de ⭐ al acertar.</p>
+        <h2 class="text-xl font-bold mb-2">Consejo</h2>
+        <p>Lee la oración completa antes de elegir: muchas parejas se distinguen por el significado y el contexto.</p>
       </div>
     </div>
 
@@ -180,8 +149,6 @@
           <div id="choices" class="flex flex-col items-center gap-4 mb-4"></div>
 
           <div class="flex flex-wrap items-center justify-center gap-3 mt-5">
-            <button id="retryBtn" class="btn">Reintentar</button>
-            <button id="hintBtn" class="btn btn-amber">Pista</button>
             <button id="showAnsBtn" class="btn btn-ghost">Ver respuesta</button>
             <button id="skipBtn" class="btn btn-ghost">Siguiente ➜</button>
           </div>
@@ -221,16 +188,16 @@
 </main>
 
 <script>
-/* ====== Helpers ====== */
+/* ===================== Helpers ===================== */
 const $ = (s)=>document.querySelector(s);
 const removeDiacritics = (t)=> (t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 const sample = (arr)=> arr[Math.floor(Math.random()*arr.length)];
 const shuffle = (arr)=> arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 
-/* ====== Confeti (estrellas) ====== */
-(function() {
-  const c=document.getElementById('confetti'),x=c.getContext('2d');let W,H,P=[],run=false;
-  function R(){W=c.width=innerWidth;H=c.height=innerHeight}R();addEventListener('resize',R);
+/* ===================== Confeti (estrellas) ===================== */
+(function(){
+  const c=document.getElementById("confetti"),x=c.getContext("2d"); let W,H,P=[],run=false;
+  function R(){ W=c.width=innerWidth; H=c.height=innerHeight; } R(); addEventListener("resize",R);
   function starPath(ctx,r){
     ctx.beginPath();
     const s=5,st=Math.PI/s; let rot=Math.PI/2*3;
@@ -242,12 +209,12 @@ const shuffle = (arr)=> arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map
     ctx.closePath();
   }
   function burst(X=W/2,Y=H/3,n=120,p=10){
-    const cols=['#22e6db','#9cf6f2','#e6edf2','#4fa0ff','#ffd479','#ffffff'];
+    const cols=["#22e6db","#9cf6f2","#e6edf2","#4fa0ff","#ffd479","#ffffff"];
     for(let i=0;i<n;i++){
       const a=Math.random()*Math.PI*2,s=Math.random()*p+5;
       P.push({x:X,y:Y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-6,sz:Math.random()*6+2,rot:Math.random()*Math.PI,vr:(Math.random()-.5)*.2,col:sample(cols),al:1});
     }
-    if(!run){run=true;requestAnimationFrame(loop);}
+    if(!run){ run=true; requestAnimationFrame(loop); }
   }
   function loop(){
     x.clearRect(0,0,W,H);
@@ -258,23 +225,23 @@ const shuffle = (arr)=> arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map
       x.fillStyle=p.col; starPath(x,p.sz); x.fill();
       x.restore();
     });
-    P=P.filter(p=>p.al>0&&p.y<H+20);
+    P=P.filter(p=>p.al>0 && p.y<H+20);
     if(P.length){ requestAnimationFrame(loop); } else { run=false; }
     x.globalAlpha=1;
   }
   window.confettiBurst=burst;
 })();
 
-/* ====== Audio FX ====== */
+/* ===================== Audio FX ===================== */
 const AudioFX=(()=>{
   const AC=window.AudioContext||window.webkitAudioContext;
   const ctx=new AC();
   const master=ctx.createGain(); master.gain.value=.8; master.connect(ctx.destination);
   let en=false,mut=false;
-  const resume=()=>{ if(ctx.state==='suspended') ctx.resume(); en=true; };
+  const resume=()=>{ if(ctx.state==="suspended") ctx.resume(); en=true; };
   const tog=()=>{ mut=!mut; master.gain.value=mut?0:.8; return mut; };
-  function tone(f,t=0,type='sine',d=.12,v=.08){
-    if(!en||mut)return;
+  function tone(f,t=0,type="sine",d=.12,v=.08){
+    if(!en||mut) return;
     const o=ctx.createOscillator(),g=ctx.createGain();
     o.type=type; o.frequency.value=f; o.connect(g); g.connect(master);
     const n=ctx.currentTime+t;
@@ -283,19 +250,18 @@ const AudioFX=(()=>{
     g.gain.exponentialRampToValueAtTime(.0001,n+d);
     o.start(n); o.stop(n+d+.02);
   }
-  const chord=(fs,st=.05,type='sine',d=.14,v=.07)=>fs.forEach((f,i)=>tone(f,i*st,type,d,v));
+  const chord=(fs,st=.05,type="sine",d=.14,v=.07)=>fs.forEach((f,i)=>tone(f,i*st,type,d,v));
   return {
     enable:resume,
     toggleMute:tog,
-    start(){chord([523,659,784],.03,'triangle',.18,.08);},
-    click(){tone(800,0,'triangle',.05,.06);},
-    success(){chord([880,1046],.02,'sine',.12,.07);},
-    partial(){chord([659,880],.02,'sine',.11,.07);},
-    fail(){tone(220,0,'sawtooth',.35,.08); tone(196,.12,'sawtooth',.33,.07);}
+    start(){ chord([523,659,784],.03,"triangle",.18,.08); },
+    click(){ tone(800,0,"triangle",.05,.06); },
+    success(){ chord([880,1046],.02,"sine",.12,.07); },
+    fail(){ tone(220,0,"sawtooth",.35,.08); tone(196,.12,"sawtooth",.33,.07); }
   };
 })();
 
-/* ====== Iconos ✔ ✖ ====== */
+/* ===================== Iconos ✔ ✖ ===================== */
 function iconSVG(kind="ok"){
   if(kind==="ok"){
     return `<svg class="fx pop" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -321,154 +287,7 @@ function iconSVG(kind="ok"){
     </g></svg>`;
 }
 
-/* ====== Banco de Homónimas (basado en el PDF) ======
-   Cada item: {pairId, a, b, correct, sentence, hint, explain}
-   correct: "a" o "b" (la palabra que completa la oración)
-*/
-const BANK = [
-  {pairId:"arrollo/arroyo", a:"arrollo", b:"arroyo", correct:"b",
-    sentence:"Después de las lluvias, el ____ bajaba con mucha fuerza cerca del camino.",
-    hint:"Pista: es un río pequeño.",
-    explain:"arroyo = río pequeño; arrollo = (yo) arrollo, forma del verbo arrollar."
-  },
-  {pairId:"abría/habría", a:"abría", b:"habría", correct:"b",
-    sentence:"Si tuviera tiempo, ____ ido contigo al museo.",
-    hint:"Pista: es una forma del verbo haber (condicional).",
-    explain:"habría = forma de haber; abría = forma de abrir."
-  },
-  {pairId:"as/has", a:"as", b:"has", correct:"a",
-    sentence:"En la baraja, el ____ de espadas suele ser una carta muy valiosa.",
-    hint:"Pista: es una carta.",
-    explain:"as = carta de la baraja; has = forma de haber (tú has)."
-  },
-  {pairId:"asta/hasta", a:"asta", b:"hasta", correct:"b",
-    sentence:"No salgo ____ que termines los deberes.",
-    hint:"Pista: es una preposición.",
-    explain:"hasta = preposición; asta = cuerno / palo de bandera."
-  },
-  {pairId:"halla/haya", a:"halla", b:"haya", correct:"a",
-    sentence:"Ojalá que el detective ____ la pista definitiva hoy.",
-    hint:"Pista: es forma del verbo hallar.",
-    explain:"halla = forma de hallar; haya = forma de haber / árbol."
-  },
-  {pairId:"haya/aya", a:"haya", b:"aya", correct:"b",
-    sentence:"Cuando era pequeño, me cuidaba una ____ muy cariñosa.",
-    hint:"Pista: es “niñera”.",
-    explain:"aya = niñera; haya = forma de haber / árbol."
-  },
-  {pairId:"baca/vaca", a:"baca", b:"vaca", correct:"a",
-    sentence:"Ataron la maleta en la ____ del coche para el viaje.",
-    hint:"Pista: va en el techo del automóvil.",
-    explain:"baca = portaequipajes del coche; vaca = hembra del toro."
-  },
-  {pairId:"barón/varón", a:"barón", b:"varón", correct:"a",
-    sentence:"El ____ heredó el título noble de su familia.",
-    hint:"Pista: es un título.",
-    explain:"barón = título noble; varón = género masculino."
-  },
-  {pairId:"basto/vasto", a:"basto", b:"vasto", correct:"b",
-    sentence:"Cruzaron un territorio ____ y casi deshabitado.",
-    hint:"Pista: significa “amplio”.",
-    explain:"vasto = amplio; basto = grosero, tosco."
-  },
-  {pairId:"baya/vaya", a:"baya", b:"vaya", correct:"a",
-    sentence:"Recogimos una ____ roja del arbusto del jardín.",
-    hint:"Pista: es un fruto.",
-    explain:"baya = fruto; vaya = forma de ir (subj.) / interjección."
-  },
-  {pairId:"valla/vaya", a:"valla", b:"vaya", correct:"a",
-    sentence:"Pusieron una ____ alrededor del parque para protegerlo.",
-    hint:"Pista: es una cerca.",
-    explain:"valla = construcción que rodea; vaya = forma de ir / interjección."
-  },
-  {pairId:"bello/vello", a:"bello", b:"vello", correct:"a",
-    sentence:"El paisaje era tan ____ que todos se quedaron en silencio.",
-    hint:"Pista: significa “hermoso”.",
-    explain:"bello = hermoso; vello = pelo fino del cuerpo."
-  },
-  {pairId:"bienes/vienes", a:"bienes", b:"vienes", correct:"b",
-    sentence:"¿Tú ____ mañana al entrenamiento o no puedes?",
-    hint:"Pista: es forma de venir.",
-    explain:"vienes = forma de venir; bienes = propiedades."
-  },
-  {pairId:"botar/votar", a:"botar", b:"votar", correct:"b",
-    sentence:"Mañana iremos a ____ en las elecciones del instituto.",
-    hint:"Pista: es emitir un voto.",
-    explain:"votar = emitir voto; botar = dar un salto al lanzar contra el suelo."
-  },
-  {pairId:"cabo/cavo", a:"cabo", b:"cavo", correct:"a",
-    sentence:"El barco se acercó a un ____ que se adentraba en el mar.",
-    hint:"Pista: saliente de la costa.",
-    explain:"cabo = saliente de la costa; cavo = (yo) cavar."
-  },
-  {pairId:"callado/cayado", a:"callado", b:"cayado", correct:"a",
-    sentence:"Durante toda la película se quedó muy ____.",
-    hint:"Pista: significa silencioso.",
-    explain:"callado = silencioso; cayado = bastón curvo para el ganado."
-  },
-  {pairId:"echo/hecho", a:"echo", b:"hecho", correct:"a",
-    sentence:"Yo ____ de menos los veranos en el pueblo.",
-    hint:"Pista: es forma del verbo echar.",
-    explain:"echo = forma de echar; hecho = participio de hacer."
-  },
-  {pairId:"hojear/ojear", a:"hojear", b:"ojear", correct:"a",
-    sentence:"Me gusta ____ la revista mientras espero el autobús.",
-    hint:"Pista: pasar páginas rápidamente.",
-    explain:"hojear = pasar las hojas; ojear = mirar superficialmente."
-  },
-  {pairId:"hola/ola", a:"hola", b:"ola", correct:"b",
-    sentence:"Una ____ enorme rompió cerca de la orilla.",
-    hint:"Pista: es del mar.",
-    explain:"ola = onda del mar; hola = saludo."
-  },
-  {pairId:"honda/onda", a:"honda", b:"onda", correct:"a",
-    sentence:"El pozo era tan ____ que no se veía el fondo.",
-    hint:"Pista: significa “profunda”.",
-    explain:"honda = profunda; onda = onda (sonido/agua)."
-  },
-  {pairId:"huso/uso", a:"huso", b:"uso", correct:"b",
-    sentence:"No le des mal ____ a esa palabra: depende del contexto.",
-    hint:"Pista: “utilización”.",
-    explain:"uso = utilización; huso = instrumento para hilar."
-  },
-  {pairId:"pollo/poyo", a:"pollo", b:"poyo", correct:"a",
-    sentence:"En la granja nació un ____ amarillo y muy pequeño.",
-    hint:"Pista: cría de ave.",
-    explain:"pollo = cría de ave; poyo = banco/asiento de piedra."
-  },
-  {pairId:"rallar/rayar", a:"rallar", b:"rayar", correct:"a",
-    sentence:"Voy a ____ el queso para la pasta.",
-    hint:"Pista: moler/raspar.",
-    explain:"rallar = moler/raspar; rayar = hacer rayas."
-  },
-  {pairId:"rallo/rayo", a:"rallo", b:"rayo", correct:"b",
-    sentence:"Durante la tormenta vimos un ____ caer muy cerca.",
-    hint:"Pista: descarga eléctrica.",
-    explain:"rayo = descarga eléctrica; rallo = (yo) rallar."
-  },
-  {pairId:"rebelar/revelar", a:"rebelar", b:"revelar", correct:"b",
-    sentence:"El laboratorio va a ____ las fotos que hicimos ayer.",
-    hint:"Pista: hacer visible la imagen impresa.",
-    explain:"revelar = descubrir/mostrar (fotos); rebelar = sublevarse."
-  },
-  {pairId:"sabia/savia", a:"sabia", b:"savia", correct:"b",
-    sentence:"La ____ circula por el interior de las plantas.",
-    hint:"Pista: líquido vegetal.",
-    explain:"savia = líquido de plantas; sabia = astuta / con conocimiento."
-  },
-  {pairId:"se calló/se cayó", a:"se calló", b:"se cayó", correct:"b",
-    sentence:"Al correr por el pasillo, ____ y se hizo daño en la rodilla.",
-    hint:"Pista: es “caerse”.",
-    explain:"se cayó = caerse; se calló = guardar silencio."
-  },
-  {pairId:"tubo/tuvo", a:"tubo", b:"tuvo", correct:"a",
-    sentence:"El fontanero cambió el ____ roto del baño.",
-    hint:"Pista: pieza cilíndrica hueca.",
-    explain:"tubo = pieza cilíndrica hueca; tuvo = forma de tener."
-  },
-];
-
-/* ====== Baremo (Excel Punktrechner official.xlsx, hoja 1) ====== */
+/* ===================== Baremo (Punktrechner official.xlsx) ===================== */
 const gradeTable = [
   {min:20.37, max:21.00, grade:"1"},
   {min:19.32, max:20.27, grade:"1-"},
@@ -492,21 +311,351 @@ function computeGrade(score){
   return row.grade;
 }
 
-/* ====== Estado ====== */
-let settings = { ignoreAccents:true };
+/* ===================== Banco: pares + variantes =====================
+   - Cada par tiene varias oraciones.
+   - Variantes alternan la solución entre a/b.
+   - El juego evita repetir variantes entre partidas usando localStorage.
+*/
+const PAIRS = [
+  {
+    pairId:"abría/habría", a:"abría", b:"habría",
+    variants:[
+      {id:"ah-1", sentence:"Si me lo hubieras dicho antes, ____ llegado a tiempo.", correct:"b", explain:"habría = forma de haber (condicional); abría = forma de abrir."},
+      {id:"ah-2", sentence:"Con la llave correcta, ____ la puerta sin dificultad.", correct:"a", explain:"abría = forma de abrir; habría = forma de haber (condicional)."},
+      {id:"ah-3", sentence:"Con más práctica, ____ resuelto el problema sin ayuda.", correct:"b", explain:"habría = forma de haber (condicional); abría = forma de abrir."},
+      {id:"ah-4", sentence:"Cada mañana ____ las ventanas para ventilar la habitación.", correct:"a", explain:"abría = forma de abrir; habría = forma de haber (condicional)."},
+    ]
+  },
+  {
+    pairId:"as/has", a:"as", b:"has",
+    variants:[
+      {id:"as-1", sentence:"En la baraja, el ____ de espadas suele ser una carta muy valiosa.", correct:"a", explain:"as = carta de la baraja; has = forma de haber (tú has)."},
+      {id:"as-2", sentence:"Tú ____ terminado los ejercicios antes de la hora.", correct:"b", explain:"has = forma de haber; as = carta de la baraja."},
+      {id:"as-3", sentence:"Me tocó el ____ de corazones en la primera mano.", correct:"a", explain:"as = carta; has = forma de haber."},
+      {id:"as-4", sentence:"¿Ya ____ visto la película que te recomendé?", correct:"b", explain:"has = forma de haber; as = carta."},
+    ]
+  },
+  {
+    pairId:"asta/hasta", a:"asta", b:"hasta",
+    variants:[
+      {id:"asta-1", sentence:"No salgo ____ que termines los deberes.", correct:"b", explain:"hasta = preposición; asta = palo de bandera / cuerno."},
+      {id:"asta-2", sentence:"Colgaron la bandera en el ____ del ayuntamiento.", correct:"a", explain:"asta = palo de bandera; hasta = preposición."},
+      {id:"asta-3", sentence:"El sendero llega ____ el mirador del valle.", correct:"b", explain:"hasta = preposición; asta = palo/cuerno."},
+      {id:"asta-4", sentence:"El toro levantó el ____ con orgullo.", correct:"a", explain:"asta = cuerno; hasta = preposición."},
+    ]
+  },
+  {
+    pairId:"halla/haya", a:"halla", b:"haya",
+    variants:[
+      {id:"hh-1", sentence:"Ojalá que el detective ____ la pista definitiva hoy.", correct:"a", explain:"halla = forma de hallar; haya = forma de haber / árbol."},
+      {id:"hh-2", sentence:"Espero que no ____ ningún error en el examen.", correct:"b", explain:"haya = forma de haber; halla = forma de hallar."},
+      {id:"hh-3", sentence:"Si lo ____ a tiempo, lo guardaremos en una carpeta.", correct:"a", explain:"halla = encuentra; haya = haber/árbol."},
+      {id:"hh-4", sentence:"Puede que ____ cambios en el horario mañana.", correct:"b", explain:"haya = haber; halla = hallar."},
+    ]
+  },
+  {
+    pairId:"haya/aya", a:"haya", b:"aya",
+    variants:[
+      {id:"haya-1", sentence:"Cuando era pequeño, me cuidaba una ____ muy cariñosa.", correct:"b", explain:"aya = niñera; haya = forma de haber / árbol."},
+      {id:"haya-2", sentence:"Ojalá que ____ tiempo para terminar el proyecto.", correct:"a", explain:"haya = forma de haber; aya = niñera."},
+      {id:"haya-3", sentence:"La ____ organizó los juegos y la merienda de los niños.", correct:"b", explain:"aya = niñera; haya = haber/árbol."},
+      {id:"haya-4", sentence:"No creo que ____ problemas si seguimos las normas.", correct:"a", explain:"haya = haber; aya = niñera."},
+    ]
+  },
+  {
+    pairId:"baca/vaca", a:"baca", b:"vaca",
+    variants:[
+      {id:"bv-1", sentence:"Ataron la maleta en la ____ del coche para el viaje.", correct:"a", explain:"baca = portaequipajes del coche; vaca = hembra del toro."},
+      {id:"bv-2", sentence:"La ____ pastaba tranquila cerca del establo.", correct:"b", explain:"vaca = animal; baca = portaequipajes."},
+      {id:"bv-3", sentence:"Compraron una ____ nueva para transportar bicicletas.", correct:"a", explain:"baca = portaequipajes; vaca = animal."},
+      {id:"bv-4", sentence:"La ____ dio leche por la mañana.", correct:"b", explain:"vaca = animal; baca = portaequipajes."},
+    ]
+  },
+  {
+    pairId:"barón/varón", a:"barón", b:"varón",
+    variants:[
+      {id:"bv2-1", sentence:"El ____ heredó el título noble de su familia.", correct:"a", explain:"barón = título noble; varón = género masculino."},
+      {id:"bv2-2", sentence:"En el formulario, marcó la opción de ____.", correct:"b", explain:"varón = masculino; barón = título noble."},
+      {id:"bv2-3", sentence:"El ____ fue nombrado por el rey en una ceremonia oficial.", correct:"a", explain:"barón = título; varón = masculino."},
+      {id:"bv2-4", sentence:"El bebé es ____ y se llama Daniel.", correct:"b", explain:"varón = masculino; barón = título."},
+    ]
+  },
+  {
+    pairId:"basto/vasto", a:"basto", b:"vasto",
+    variants:[
+      {id:"bv3-1", sentence:"Cruzaron un territorio ____ y casi deshabitado.", correct:"b", explain:"vasto = amplio; basto = grosero, tosco."},
+      {id:"bv3-2", sentence:"Su comentario fue muy ____ y poco respetuoso.", correct:"a", explain:"basto = grosero; vasto = amplio."},
+      {id:"bv3-3", sentence:"Desde la cima se veía un paisaje ____ hasta el horizonte.", correct:"b", explain:"vasto = amplio; basto = tosco."},
+      {id:"bv3-4", sentence:"El tejido era ____ y áspero al tacto.", correct:"a", explain:"basto = tosco; vasto = amplio."},
+    ]
+  },
+  {
+    pairId:"baya/vaya", a:"baya", b:"vaya",
+    variants:[
+      {id:"bvv-1", sentence:"Recogimos una ____ roja del arbusto del jardín.", correct:"a", explain:"baya = fruto; vaya = forma de ir (subj.) / interjección."},
+      {id:"bvv-2", sentence:"¡____ sorpresa nos dieron al final de la fiesta!", correct:"b", explain:"vaya = interjección; baya = fruto."},
+      {id:"bvv-3", sentence:"Esa ____ es comestible, pero no todas lo son.", correct:"a", explain:"baya = fruto; vaya = forma de ir / interjección."},
+      {id:"bvv-4", sentence:"Puede que ____ a verte después de clase.", correct:"b", explain:"vaya = forma de ir; baya = fruto."},
+    ]
+  },
+  {
+    pairId:"valla/vaya", a:"valla", b:"vaya",
+    variants:[
+      {id:"vv-1", sentence:"Pusieron una ____ alrededor del parque para protegerlo.", correct:"a", explain:"valla = cerca; vaya = forma de ir / interjección."},
+      {id:"vv-2", sentence:"Espero que ____ todo bien en el viaje.", correct:"b", explain:"vaya = forma de ir; valla = cerca."},
+      {id:"vv-3", sentence:"La ____ de madera estaba recién pintada.", correct:"a", explain:"valla = cerca; vaya = forma de ir / interjección."},
+      {id:"vv-4", sentence:"¡____ día tan largo hemos tenido!", correct:"b", explain:"vaya = interjección; valla = cerca."},
+    ]
+  },
+  {
+    pairId:"bello/vello", a:"bello", b:"vello",
+    variants:[
+      {id:"bv4-1", sentence:"El paisaje era tan ____ que todos se quedaron en silencio.", correct:"a", explain:"bello = hermoso; vello = pelo fino del cuerpo."},
+      {id:"bv4-2", sentence:"El ____ del brazo apenas se nota a simple vista.", correct:"b", explain:"vello = pelo fino; bello = hermoso."},
+      {id:"bv4-3", sentence:"Qué ____ fue el concierto de anoche.", correct:"a", explain:"bello = hermoso; vello = pelo fino."},
+      {id:"bv4-4", sentence:"Con la luz, se veía el ____ de la mejilla.", correct:"b", explain:"vello = pelo fino; bello = hermoso."},
+    ]
+  },
+  {
+    pairId:"bienes/vienes", a:"bienes", b:"vienes",
+    variants:[
+      {id:"bv5-1", sentence:"¿Tú ____ mañana al entrenamiento o no puedes?", correct:"b", explain:"vienes = forma de venir; bienes = propiedades."},
+      {id:"bv5-2", sentence:"Declaró sus ____ en el documento oficial.", correct:"a", explain:"bienes = propiedades; vienes = forma de venir."},
+      {id:"bv5-3", sentence:"Si ____ pronto, te guardo sitio.", correct:"b", explain:"vienes = venir; bienes = propiedades."},
+      {id:"bv5-4", sentence:"Los ____ de la familia se repartieron en el testamento.", correct:"a", explain:"bienes = propiedades; vienes = venir."},
+    ]
+  },
+  {
+    pairId:"botar/votar", a:"botar", b:"votar",
+    variants:[
+      {id:"bv6-1", sentence:"Mañana iremos a ____ en las elecciones del instituto.", correct:"b", explain:"votar = emitir voto; botar = rebotar / tirar."},
+      {id:"bv6-2", sentence:"El balón empezó a ____ contra el suelo sin parar.", correct:"a", explain:"botar = rebotar; votar = emitir voto."},
+      {id:"bv6-3", sentence:"Es importante ____ con responsabilidad.", correct:"b", explain:"votar = emitir voto; botar = rebotar."},
+      {id:"bv6-4", sentence:"Al caer, la pelota volvió a ____ hacia mí.", correct:"a", explain:"botar = rebotar; votar = emitir voto."},
+    ]
+  },
+  {
+    pairId:"cabo/cavo", a:"cabo", b:"cavo",
+    variants:[
+      {id:"cc-1", sentence:"El barco se acercó a un ____ que se adentraba en el mar.", correct:"a", explain:"cabo = saliente de la costa / rango; cavo = (yo) cavar."},
+      {id:"cc-2", sentence:"Yo ____ un hoyo en la tierra para plantar un árbol.", correct:"b", explain:"cavo = forma de cavar; cabo = saliente / rango."},
+      {id:"cc-3", sentence:"El ____ de la escuadra dio las instrucciones.", correct:"a", explain:"cabo = rango; cavo = cavar."},
+      {id:"cc-4", sentence:"Si ____ más hondo, encontraré la raíz.", correct:"b", explain:"cavo = cavar; cabo = rango/saliente."},
+    ]
+  },
+  {
+    pairId:"callado/cayado", a:"callado", b:"cayado",
+    variants:[
+      {id:"c1-1", sentence:"Durante toda la película se quedó muy ____.", correct:"a", explain:"callado = silencioso; cayado = bastón curvo."},
+      {id:"c1-2", sentence:"El pastor apoyó su ____ en la pared.", correct:"b", explain:"cayado = bastón; callado = silencioso."},
+      {id:"c1-3", sentence:"En clase, permaneció ____ para escuchar mejor.", correct:"a", explain:"callado = silencioso; cayado = bastón."},
+      {id:"c1-4", sentence:"El ____ de madera era antiguo y estaba tallado.", correct:"b", explain:"cayado = bastón; callado = silencioso."},
+    ]
+  },
+  {
+    pairId:"echo/hecho", a:"echo", b:"hecho",
+    variants:[
+      {id:"eh-1", sentence:"Yo ____ de menos los veranos en el pueblo.", correct:"a", explain:"echo = forma de echar; hecho = participio de hacer."},
+      {id:"eh-2", sentence:"Ese trabajo está bien ____.", correct:"b", explain:"hecho = participio de hacer; echo = forma de echar."},
+      {id:"eh-3", sentence:"Si me equivoco, me ____ la culpa a mí mismo.", correct:"a", explain:"echo = echar; hecho = participio de hacer."},
+      {id:"eh-4", sentence:"Lo que has ____ hoy es impresionante.", correct:"b", explain:"hecho = hecho (hacer); echo = echar."},
+    ]
+  },
+  {
+    pairId:"hojear/ojear", a:"hojear", b:"ojear",
+    variants:[
+      {id:"ho-1", sentence:"Me gusta ____ la revista mientras espero el autobús.", correct:"a", explain:"hojear = pasar páginas; ojear = mirar superficialmente."},
+      {id:"ho-2", sentence:"Voy a ____ el mapa para localizar la salida.", correct:"b", explain:"ojear = mirar; hojear = pasar páginas."},
+      {id:"ho-3", sentence:"Antes de comprarlo, prefiero ____ el libro.", correct:"a", explain:"hojear = pasar páginas; ojear = mirar."},
+      {id:"ho-4", sentence:"Al entrar, ____ la sala para ver quién estaba.", correct:"b", explain:"ojear = mirar; hojear = pasar páginas."},
+    ]
+  },
+  {
+    pairId:"hola/ola", a:"hola", b:"ola",
+    variants:[
+      {id:"ho2-1", sentence:"Una ____ enorme rompió cerca de la orilla.", correct:"b", explain:"ola = onda del mar; hola = saludo."},
+      {id:"ho2-2", sentence:"Al llegar, dije ____ a todos mis compañeros.", correct:"a", explain:"hola = saludo; ola = onda del mar."},
+      {id:"ho2-3", sentence:"La ____ salpicó el paseo marítimo.", correct:"b", explain:"ola = onda del mar; hola = saludo."},
+      {id:"ho2-4", sentence:"Cuando la vi, le dije: “____, ¿cómo estás?”", correct:"a", explain:"hola = saludo; ola = onda del mar."},
+    ]
+  },
+  {
+    pairId:"honda/onda", a:"honda", b:"onda",
+    variants:[
+      {id:"hon-1", sentence:"El pozo era tan ____ que no se veía el fondo.", correct:"a", explain:"honda = profunda; onda = vibración/onda."},
+      {id:"hon-2", sentence:"La radio emitió una ____ que interfirió el sonido.", correct:"b", explain:"onda = señal; honda = profunda."},
+      {id:"hon-3", sentence:"La herida era muy ____ y necesitó puntos.", correct:"a", explain:"honda = profunda; onda = señal."},
+      {id:"hon-4", sentence:"La ____ se propagó por el agua tras lanzar una piedra.", correct:"b", explain:"onda = propagación; honda = profunda."},
+    ]
+  },
+  {
+    pairId:"huso/uso", a:"huso", b:"uso",
+    variants:[
+      {id:"hu-1", sentence:"No le des mal ____ a esa palabra: depende del contexto.", correct:"b", explain:"uso = utilización; huso = instrumento para hilar."},
+      {id:"hu-2", sentence:"El ____ se utilizaba para hilar lana antiguamente.", correct:"a", explain:"huso = instrumento; uso = utilización."},
+      {id:"hu-3", sentence:"El ____ de casco es obligatorio en esta pista.", correct:"b", explain:"uso = utilización; huso = instrumento."},
+      {id:"hu-4", sentence:"En el museo vimos un ____ de madera muy antiguo.", correct:"a", explain:"huso = instrumento; uso = utilización."},
+    ]
+  },
+  {
+    pairId:"pollo/poyo", a:"pollo", b:"poyo",
+    variants:[
+      {id:"pp-1", sentence:"En la granja nació un ____ amarillo y muy pequeño.", correct:"a", explain:"pollo = cría de ave; poyo = banco de piedra."},
+      {id:"pp-2", sentence:"Nos sentamos en el ____ de piedra junto a la puerta.", correct:"b", explain:"poyo = banco; pollo = cría de ave."},
+      {id:"pp-3", sentence:"Compramos ____ para hacer una receta al horno.", correct:"a", explain:"pollo = ave; poyo = banco."},
+      {id:"pp-4", sentence:"El ____ estaba frío porque daba la sombra.", correct:"b", explain:"poyo = banco; pollo = ave."},
+    ]
+  },
+  {
+    pairId:"rallar/rayar", a:"rallar", b:"rayar",
+    variants:[
+      {id:"rr-1", sentence:"Voy a ____ el queso para la pasta.", correct:"a", explain:"rallar = raspar/moler; rayar = hacer rayas."},
+      {id:"rr-2", sentence:"No debes ____ la mesa con el cúter.", correct:"b", explain:"rayar = hacer rayas; rallar = raspar."},
+      {id:"rr-3", sentence:"Necesito ____ zanahoria para la ensalada.", correct:"a", explain:"rallar = raspar; rayar = hacer rayas."},
+      {id:"rr-4", sentence:"El gato dejó el sofá todo ____.", correct:"b", explain:"rayar = dejar con rayas/marcas; rallar = raspar."},
+    ]
+  },
+  {
+    pairId:"rallo/rayo", a:"rallo", b:"rayo",
+    variants:[
+      {id:"r2-1", sentence:"Durante la tormenta vimos un ____ caer muy cerca.", correct:"b", explain:"rayo = descarga eléctrica; rallo = (yo) rallar."},
+      {id:"r2-2", sentence:"Si no encuentro el rallador, yo ____ el queso con cuidado.", correct:"a", explain:"rallo = forma de rallar; rayo = descarga eléctrica."},
+      {id:"r2-3", sentence:"Un ____ iluminó el cielo en un instante.", correct:"b", explain:"rayo = descarga eléctrica; rallo = rallar."},
+      {id:"r2-4", sentence:"Cuando cocino, ____ la nuez moscada al final.", correct:"a", explain:"rallo = rallar; rayo = descarga eléctrica."},
+    ]
+  },
+  {
+    pairId:"rebelar/revelar", a:"rebelar", b:"revelar",
+    variants:[
+      {id:"rev-1", sentence:"El laboratorio va a ____ las fotos que hicimos ayer.", correct:"b", explain:"revelar = descubrir/mostrar (fotos); rebelar = sublevarse."},
+      {id:"rev-2", sentence:"Los ciudadanos decidieron ____ contra la injusticia.", correct:"a", explain:"rebelar = sublevarse; revelar = mostrar/descubrir."},
+      {id:"rev-3", sentence:"No puedo ____ el secreto todavía.", correct:"b", explain:"revelar = descubrir; rebelar = sublevarse."},
+      {id:"rev-4", sentence:"Se intentó ____ a los soldados contra el mando.", correct:"a", explain:"rebelar = sublevar; revelar = descubrir."},
+    ]
+  },
+  {
+    pairId:"sabia/savia", a:"sabia", b:"savia",
+    variants:[
+      {id:"ss-1", sentence:"La ____ circula por el interior de las plantas.", correct:"b", explain:"savia = líquido vegetal; sabia = con conocimiento / astuta."},
+      {id:"ss-2", sentence:"Mi abuela es muy ____ y siempre da buenos consejos.", correct:"a", explain:"sabia = con conocimiento; savia = líquido vegetal."},
+      {id:"ss-3", sentence:"En primavera, la ____ sube por el tronco con más fuerza.", correct:"b", explain:"savia = líquido vegetal; sabia = con conocimiento."},
+      {id:"ss-4", sentence:"Fue una respuesta ____ y bien razonada.", correct:"a", explain:"sabia = con conocimiento; savia = líquido vegetal."},
+    ]
+  },
+  {
+    pairId:"se calló/se cayó", a:"se calló", b:"se cayó",
+    variants:[
+      {id:"sc-1", sentence:"Al correr por el pasillo, ____ y se hizo daño en la rodilla.", correct:"b", explain:"se cayó = caerse; se calló = guardar silencio."},
+      {id:"sc-2", sentence:"Cuando le preguntaron, ____ y no respondió.", correct:"a", explain:"se calló = guardó silencio; se cayó = se precipitó."},
+      {id:"sc-3", sentence:"En el patio, ____ de la bicicleta.", correct:"b", explain:"se cayó = caerse; se calló = silencio."},
+      {id:"sc-4", sentence:"En cuanto empezó la explicación, ____ para escuchar con atención.", correct:"a", explain:"se calló = silencio; se cayó = caerse."},
+    ]
+  },
+  {
+    pairId:"tubo/tuvo", a:"tubo", b:"tuvo",
+    variants:[
+      {id:"tt-1", sentence:"El fontanero cambió el ____ roto del baño.", correct:"a", explain:"tubo = pieza cilíndrica; tuvo = forma de tener."},
+      {id:"tt-2", sentence:"Ayer ____ que salir antes por una urgencia.", correct:"b", explain:"tuvo = forma de tener; tubo = pieza cilíndrica."},
+      {id:"tt-3", sentence:"El ____ de cobre estaba doblado.", correct:"a", explain:"tubo = conducto; tuvo = forma de tener."},
+      {id:"tt-4", sentence:"Mi hermano ____ fiebre toda la noche.", correct:"b", explain:"tuvo = forma de tener; tubo = conducto."},
+    ]
+  },
+  {
+    pairId:"arrollo/arroyo", a:"arrollo", b:"arroyo",
+    variants:[
+      {id:"ar-1", sentence:"Después de las lluvias, el ____ bajaba con mucha fuerza cerca del camino.", correct:"b", explain:"arroyo = río pequeño; arrollo = (yo) arrollo, forma del verbo arrollar."},
+      {id:"ar-2", sentence:"Con el coche, yo ____ una piedra sin querer.", correct:"a", explain:"arrollo = forma de arrollar; arroyo = río pequeño."},
+      {id:"ar-3", sentence:"Cruzamos el ____ por un puente de madera.", correct:"b", explain:"arroyo = río pequeño; arrollo = arrollar."},
+      {id:"ar-4", sentence:"Si no freno a tiempo, ____ el cono de señalización.", correct:"a", explain:"arrollo = arrollar; arroyo = río pequeño."},
+    ]
+  },
+];
+
+/* ===================== Normalización =====================
+   Sin botón de tildes: se ignoran siempre (mejor experiencia).
+*/
+const normalize = (t)=> removeDiacritics((t||"").trim().toLowerCase());
+
+/* ===================== Persistencia: variantes ya usadas ===================== */
+const LS_KEY = "homonimas_used_variants_v1";
+function loadUsed(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    const obj = raw ? JSON.parse(raw) : {};
+    return (obj && typeof obj==="object") ? obj : {};
+  }catch(e){
+    return {};
+  }
+}
+function saveUsed(obj){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(obj)); }catch(e){}
+}
+/* Marca una variante como usada (por pairId) */
+function markVariantUsed(pairId, variantId){
+  const used = loadUsed();
+  used[pairId] = used[pairId] || [];
+  if(!used[pairId].includes(variantId)) used[pairId].push(variantId);
+  saveUsed(used);
+}
+/* Devuelve una variante no usada; si se agotaron, resetea SOLO ese par */
+function pickFreshVariant(pair){
+  const used = loadUsed();
+  const usedIds = new Set((used[pair.pairId] || []).map(String));
+  const fresh = pair.variants.filter(v => !usedIds.has(String(v.id)));
+  if(fresh.length){
+    return sample(fresh);
+  }
+  // agotadas -> reset del par y devuelve una cualquiera
+  used[pair.pairId] = [];
+  saveUsed(used);
+  return sample(pair.variants);
+}
+
+/* ===================== Construcción de deck (21 pares sin repetir palabra) ===================== */
+function buildDeck(){
+  // Selecciona 21 pares distintos.
+  // Regla: no puede repetirse ninguna palabra dentro de la partida.
+  // Cada par consume sus dos palabras, así que basta con que no repitamos par.
+  // (Aun así dejamos el control por robustez.)
+  const attempts = 250;
+  for(let k=0;k<attempts;k++){
+    const pool = shuffle([...PAIRS]);
+    const usedWords = new Set();
+    const chosen = [];
+    for(const pair of pool){
+      const wa = normalize(pair.a), wb = normalize(pair.b);
+      if(usedWords.has(wa) || usedWords.has(wb)) continue;
+      usedWords.add(wa); usedWords.add(wb);
+      const v = pickFreshVariant(pair);
+      chosen.push({
+        pairId: pair.pairId,
+        a: pair.a,
+        b: pair.b,
+        sentence: v.sentence,
+        correct: v.correct, // "a" o "b"
+        explain: v.explain,
+        variantId: v.id
+      });
+      if(chosen.length === 21) break;
+    }
+    if(chosen.length === 21) return chosen;
+  }
+  // Fallback
+  return shuffle([...PAIRS]).slice(0,21).map(pair=>{
+    const v = pickFreshVariant(pair);
+    return {pairId:pair.pairId,a:pair.a,b:pair.b,sentence:v.sentence,correct:v.correct,explain:v.explain,variantId:v.id};
+  });
+}
+
+/* ===================== Estado ===================== */
 let game = {
   deck:[], idx:0,
   score:0, good:0, bad:0,
   mistakes:[],
-  usedRetry:false, usedHint:false,
-  locked:false, // bloquea dobles clics
+  locked:false
 };
 
-const normalize = (t)=> settings.ignoreAccents
-  ? removeDiacritics((t||"").trim().toLowerCase())
-  : (t||"").trim().toLowerCase();
-
-/* ====== UI ====== */
+/* ===================== UI ===================== */
 function setFeedback(kind,msg=""){
   const f=$("#feedback");
   f.innerHTML = iconSVG(kind==="bad"?"bad":"ok");
@@ -520,49 +669,22 @@ function updateHUD(){
   $("#bar").style.width = `${(game.idx/21)*100}%`;
 }
 
-/* ====== Construcción de deck (21 sin repetir ninguna palabra) ====== */
-function buildDeck(){
-  // Selección greedy con reintentos para garantizar 21 sin repetir palabras
-  const attempts = 250;
-  for(let k=0;k<attempts;k++){
-    const pool = shuffle([...BANK]);
-    const used = new Set();
-    const chosen = [];
-    for(const q of pool){
-      const wa = normalize(q.a);
-      const wb = normalize(q.b);
-      if(used.has(wa) || used.has(wb)) continue;
-      used.add(wa); used.add(wb);
-      chosen.push(q);
-      if(chosen.length === 21) break;
-    }
-    if(chosen.length === 21) return chosen;
-  }
-  // Fallback (muy improbable): sin restricción
-  return shuffle([...BANK]).slice(0,21);
-}
-
-/* ====== Render ====== */
+/* ===================== Render ===================== */
 function renderRound(){
   const q = game.deck[game.idx];
   $("#hud").classList.remove("hidden");
   $("#hudHint").classList.add("hidden");
 
   $("#round").textContent = game.idx + 1;
-
-  // Oración con hueco
   $("#sentence").textContent = q.sentence;
 
-  // Opciones (aleatorizar orden)
-  game.usedRetry = false;
-  game.usedHint = false;
-  game.locked = false;
   $("#helper").textContent = "";
   $("#feedback").innerHTML = "";
+  game.locked = false;
 
   const opts = shuffle([
     {key:"a", text:q.a},
-    {key:"b", text:q.b},
+    {key:"b", text:q.b}
   ]);
 
   const choices = $("#choices");
@@ -572,51 +694,49 @@ function renderRound(){
     btn.className = "choice";
     btn.type = "button";
     btn.textContent = opt.text;
-    btn.addEventListener("click", ()=> handleChoice(opt.key, btn, opts));
+    btn.addEventListener("click", ()=> handleChoice(opt.key, btn));
     choices.appendChild(btn);
   });
 
   updateHUD();
 }
 
-/* ====== Lógica de acierto/fallo ====== */
-function handleChoice(chosenKey, btnEl, opts){
+/* ===================== Lógica ===================== */
+function handleChoice(chosenKey, btnEl){
   if(game.locked) return;
-  const q = game.deck[game.idx];
-
-  const isCorrect = (chosenKey === q.correct);
-
-  // Bloquea el clic doble, pero dejamos "Reintentar" si falla
   game.locked = true;
 
-  // Deshabilitar botones de opciones
+  const q = game.deck[game.idx];
+  const correctKey = q.correct;
+  const correctWord = (correctKey==="a") ? q.a : q.b;
+
+  // Deshabilitar opciones
   [...$("#choices").children].forEach(b=>b.disabled=true);
 
-  if(isCorrect){
-    const partial = game.usedHint || game.usedRetry;
-    game.score += partial ? 0.5 : 1.0;
+  if(chosenKey === correctKey){
+    game.score += 1.0;
     game.good += 1;
     btnEl.classList.add("good");
-    setFeedback("ok", partial ? "¡Correcto! (+0,5)" : "¡Perfecto! (+1)");
-    partial ? AudioFX.partial() : AudioFX.success();
-    confettiBurst(innerWidth*0.5, innerHeight*0.33, partial?100:150, partial?8:12);
+    setFeedback("ok","¡Perfecto! (+1)");
+    AudioFX.success();
+    confettiBurst(innerWidth*0.5, innerHeight*0.33, 150, 12);
+
+    // Marcar variante como usada (para no repetir al volver a jugar)
+    markVariantUsed(q.pairId, q.variantId);
 
     updateHUD();
     setTimeout(()=> finishOrNext(), 420);
     return;
   }
 
-  // Fallo: no avanzamos automáticamente (para permitir "Reintentar")
+  // Fallo: cuenta error y avanza
   game.bad += 1;
-
-  // Resalta la elegida como mala y la correcta como buena
   btnEl.classList.add("bad");
-  const correctWord = (q.correct==="a") ? q.a : q.b;
   [...$("#choices").children].forEach(b=>{
     if(normalize(b.textContent) === normalize(correctWord)) b.classList.add("good");
   });
 
-  // Registra el error
+  // Registrar error
   const chosenText = (chosenKey==="a") ? q.a : q.b;
   game.mistakes.push({
     sentence: q.sentence,
@@ -625,27 +745,14 @@ function handleChoice(chosenKey, btnEl, opts){
     explain: q.explain
   });
 
-  setFeedback("bad", "Incorrecto. Pulsa Reintentar o Siguiente.");
+  setFeedback("bad", `Incorrecto. La correcta era “${correctWord}”.`);
   AudioFX.fail();
+
+  // Aunque falle, también marcamos la variante como usada: ya ha aparecido en esta partida
+  markVariantUsed(q.pairId, q.variantId);
+
   updateHUD();
-
-  // Permitimos reintentar: desbloqueamos y reactivamos botones
-  game.locked = false;
-  [...$("#choices").children].forEach(b=>b.disabled=false);
-}
-
-/* ====== Acciones ====== */
-function useRetry(){
-  game.usedRetry = true;
-  $("#helper").textContent = "Reintento activo: si aciertas ahora suma 0,5.";
-  AudioFX.click();
-}
-
-function giveHint(){
-  const q = game.deck[game.idx];
-  game.usedHint = true;
-  $("#helper").textContent = q.hint;
-  AudioFX.click();
+  setTimeout(()=> finishOrNext(), 900);
 }
 
 function showAnswer(){
@@ -668,6 +775,9 @@ function skip(){
     explain: q.explain
   });
 
+  // También marcamos como usada para no repetirla al reiniciar
+  markVariantUsed(q.pairId, q.variantId);
+
   setFeedback("bad","Siguiente…");
   AudioFX.fail();
   updateHUD();
@@ -683,7 +793,7 @@ function finishOrNext(){
   }
 }
 
-/* ====== Fin ====== */
+/* ===================== Fin ===================== */
 function endGame(){
   $("#playArea").classList.add("hidden");
   $("#resultArea").classList.remove("hidden");
@@ -728,29 +838,17 @@ function escapeHTML(s){
     .replaceAll("'","&#039;");
 }
 
-/* ====== Eventos ====== */
-$("#accentSwitch").addEventListener("click",(e)=>{
-  const on = e.currentTarget.getAttribute("data-on") !== "true";
-  e.currentTarget.setAttribute("data-on", String(on));
-  settings.ignoreAccents = on;
-  AudioFX.click();
-  const t=$("#tildeToast");
-  t.textContent = on ? "✓ Tildes ignoradas" : "× Tildes activas";
-  t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),1100);
-});
-
+/* ===================== Inicio / Eventos ===================== */
 function startGame(){
   AudioFX.enable();
   AudioFX.start();
+
   game.deck = buildDeck();
   game.idx = 0;
   game.score = 0;
   game.good = 0;
   game.bad = 0;
   game.mistakes = [];
-  game.usedRetry = false;
-  game.usedHint = false;
   game.locked = false;
 
   $("#playArea").classList.remove("hidden");
@@ -764,8 +862,6 @@ $("#startBtn").addEventListener("click", startGame);
 $("#restartBtn").addEventListener("click", startGame);
 $("#againBtn").addEventListener("click", startGame);
 
-$("#retryBtn").addEventListener("click", useRetry);
-$("#hintBtn").addEventListener("click", giveHint);
 $("#showAnsBtn").addEventListener("click", showAnswer);
 $("#skipBtn").addEventListener("click", skip);
 
